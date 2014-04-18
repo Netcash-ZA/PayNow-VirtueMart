@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmpayment" >
+
+    <name>VM - Payment, Sage Pay Now</name>
+    <creationDate>April 2014</creationDate>
+    <author>Sage Pay</author>
+    <authorUrl>http://www.sagepay.co.za</authorUrl>
+    <copyright>Copyright (C) 2014 Sage Pay. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+    <version>2.0</version>
+    <description><![CDATA[<a href="http://www.sagepay.co.za" target="_blank">Sage Pay Now</a> ]]></description>
+    
+    <files>
+        <filename plugin="sagepaynow">sagepaynow.php</filename>
+        <filename>sagepaynow_common.inc</filename>
+        <filename>index.html</filename>
+    </files>
+    
+    <media folder="images" destination="../images/stories/virtuemart/payment">
+	   <filename>sagepaynow.png</filename>
+       <filename>sagepaynowlogo.gif</filename>
+    </media>
+    
+    <languages>
+	<language tag="en-GB">administrator\language\en-GB\en-GB.plg_vmpayment_sagepaynow.ini</language>
+    </languages>
+    <params addpath="/administrator/components/com_virtuemart/elements">
+    
+	<param type="vmjpluginwarning" />
+	<param   type="spacer" default="VMPAYMENT_SAGEPAYNOW_PARAMS" level="level1" />	
+	<param type="text" name="sagepaynow_service_key"  size="50" label="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY"
+             default="" description="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY_DESC" />
+
+	<param type="spacer" default="VMPAYMENT_SAGEPAYNOW_SANDBOX_PARAMS" level="level1" />
+
+	<param name="sandbox" type="radio" default="1" label="VMPAYMENT_SAGEPAYNOW_SANDBOX" description="VMPAYMENT_SAGEPAYNOW_SANDBOX_DESC" >
+	    <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+	</param>
+
+	<param   type="spacer" default="VMPAYMENT_SAGEPAYNOW_VIRTUEMART_PARAMS" level="level1" />
+	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_SAGEPAYNOW_LOGOS"
+             	description="VMPAYMENT_SAGEPAYNOW_LOGOS_DESC"
+             	directory="/images/stories/virtuemart/payment"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="0"  exclude="^_" />
+
+	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_SAGEPAYNOW_STATUS_PENDING" description="VMPAYMENT_SAGEPAYNOW_STATUS_PENDING_EXPLAIN" />
+	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_SAGEPAYNOW_STATUS_SUCCESS" description="VMPAYMENT_SAGEPAYNOW_STATUS_SUCCESS_EXPLAIN" />
+	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_SAGEPAYNOW_STATUS_FAILED" description="VMPAYMENT_SAGEPAYNOW_STATUS_FAILED_EXPLAIN" />
+	<param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_SAGEPAYNOW_COUNTRIES" description="VMPAYMENT_SAGEPAYNOW_COUNTRIES_DESC"/>
+	<param name="min_amount" type="text"  label="VMPAYMENT_SAGEPAYNOW_MIN_AMOUNT" description="VMPAYMENT_SAGEPAYNOW_MIN_AMOUNT_EXPLAIN" />
+	<param name="max_amount" type="text"  label="VMPAYMENT_SAGEPAYNOW_MAX_AMOUNT" description="VMPAYMENT_SAGEPAYNOW_MAX_AMOUNT_EXPLAIN" />
+	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_SAGEPAYNOW_TAX" description="VMPAYMENT_SAGEPAYNOW_TAX_EXPLAIN" />
+    </params>
+
+    <fieldset addpath="/administrator/components/com_virtuemart/elements">
+	<field type="vmjpluginwarning" />
+	<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_FIELDS" level="level1" />	
+	<field type="text" name="sagepaynow_service_key"  size="50" label="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY"
+             default="" description="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY_DESC" />
+
+	<field	name="payment_logos" type="vmfiles" label="VMPAYMENT_SAGEPAYNOW_LOGOS"
+             	description="VMPAYMENT_SAGEPAYNOW_LOGOS_DESC"
+             	directory="/images/stories/virtuemart/payment"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="0"  exclude="^_" />
+
+	<field   type="spacer" default="VMPAYMENT_SAGEPAYNOW_SANDBOX_FIELDS" level="level1" />
+
+	<field name="sandbox" type="radio" default="1" label="VMPAYMENT_SAGEPAYNOW_SANDBOX" description="VMPAYMENT_SAGEPAYNOW_SANDBOX_DESC" >
+	    <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+	</field>
+
+	<field   type="spacer" default="VMPAYMENT_SAGEPAYNOW_VIRTUEMART_FIELDS" level="level1" />
+
+	<field	name="payment_logos" type="vmfiles" label="VMPAYMENT_SAGEPAYNOW_LOGOS"
+             	description="VMPAYMENT_SAGEPAYNOW_LOGOS_DESC"
+             	directory="/images/stories/virtuemart/payment"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="0"  exclude="^_" />
+
+	<field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_SAGEPAYNOW_STATUS_PENDING" description="VMPAYMENT_SAGEPAYNOW_STATUS_PENDING_EXPLAIN" />
+	<field name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_SAGEPAYNOW_STATUS_SUCCESS" description="VMPAYMENT_SAGEPAYNOW_STATUS_SUCCESS_EXPLAIN" />
+	<field name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_SAGEPAYNOW_STATUS_FAILED" description="VMPAYMENT_SAGEPAYNOW_STATUS_FAILED_EXPLAIN" />
+	<field name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_SAGEPAYNOW_COUNTRIES" description="VMPAYMENT_SAGEPAYNOW_COUNTRIES_DESC"/>
+
+	<field name="min_amount" type="text"  label="VMPAYMENT_SAGEPAYNOW_MIN_AMOUNT" description="VMPAYMENT_SAGEPAYNOW_MIN_AMOUNT_EXPLAIN" />
+	<field name="max_amount" type="text"  label="VMPAYMENT_SAGEPAYNOW_MAX_AMOUNT" description="VMPAYMENT_SAGEPAYNOW_MAX_AMOUNT_EXPLAIN" />
+	<field name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_SAGEPAYNOW_TAX" description="VMPAYMENT_SAGEPAYNOW_TAX_EXPLAIN" />
+    </fieldset>
+</install>
