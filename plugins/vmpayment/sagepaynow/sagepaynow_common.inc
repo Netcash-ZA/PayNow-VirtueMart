@@ -3,9 +3,13 @@
  * sagepaynow_common.inc
  */
 
-//// Create user agent string
+define( 'PN_DEBUG', true);
+
+// Create user agent string
 // User agent constituents (for cURL)
 define( 'PN_SOFTWARE_NAME', 'Virtuemart' );
+// TODO Tested Joomla version: Joomla! 2.5.19
+// VirtueMart version? 2.0.6?
 define( 'PN_SOFTWARE_VER', "2.0.6" );
 define( 'PN_MODULE_NAME', 'SagePayNow-Virtuemart' );
 define( 'PN_MODULE_VER', '1.0.0' );
@@ -38,7 +42,6 @@ define( 'PN_ERR_BAD_ACCESS', 'Bad access of page' );
 define( 'PN_ERR_BAD_SOURCE_IP', 'Bad source IP address' );
 define( 'PN_ERR_CONNECT_FAILED', 'Failed to connect to Sage Pay Now' );
 define( 'PN_ERR_INVALID_SIGNATURE', 'Security signature mismatch' );
-define( 'PN_ERR_MERCHANT_ID_MISMATCH', 'Merchant ID mismatch' );
 define( 'PN_ERR_NO_SESSION', 'No saved session found for IPN transaction' );
 define( 'PN_ERR_ORDER_ID_MISSING_URL', 'Order ID not present in URL' );
 define( 'PN_ERR_ORDER_ID_MISMATCH', 'Order ID mismatch' );
@@ -83,7 +86,7 @@ function pnlog( $msg = '', $close = false )
             if( !$fh )
             {
                 $pathinfo = pathinfo( __FILE__ );
-                $fh = fopen( $pathinfo['dirname'] .'/sagepaynowt.log', 'a+' );
+                $fh = fopen( $pathinfo['dirname'] .'/sagepaynow.log', 'a+' );
             }
 
             // If file was successfully created

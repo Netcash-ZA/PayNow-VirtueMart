@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" >
 
-    <name>VM - Payment, Sage Pay Now</name>
+    <name>VM Payment - Sage Pay Now</name>
     <creationDate>April 2014</creationDate>
     <author>Sage Pay</author>
-    <authorUrl>http://www.sagepay.co.za</authorUrl>
+    <authorUrl>http://www.sagepay.co.za/sagepay/</authorUrl>
     <copyright>Copyright (C) 2014 Sage Pay. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>2.0</version>
-    <description><![CDATA[<a href="http://www.sagepay.co.za" target="_blank">Sage Pay Now</a> ]]></description>
+    <version>1.0</version>
+    <description><![CDATA[<a href="http://www.sagepay.co.za/sagepay/pay_now_gateway.asp" target="_blank">Sage Pay Now</a> ]]></description>
     
     <files>
         <filename plugin="sagepaynow">sagepaynow.php</filename>
@@ -17,8 +17,7 @@
     </files>
     
     <media folder="images" destination="../images/stories/virtuemart/payment">
-	   <filename>sagepaynow.png</filename>
-       <filename>sagepaynowlogo.gif</filename>
+	   <filename>Pay-Now-Button.jpg</filename>       
     </media>
     
     <languages>
@@ -30,13 +29,6 @@
 	<param   type="spacer" default="VMPAYMENT_SAGEPAYNOW_PARAMS" level="level1" />	
 	<param type="text" name="sagepaynow_service_key"  size="50" label="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY"
              default="" description="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY_DESC" />
-
-	<param type="spacer" default="VMPAYMENT_SAGEPAYNOW_SANDBOX_PARAMS" level="level1" />
-
-	<param name="sandbox" type="radio" default="1" label="VMPAYMENT_SAGEPAYNOW_SANDBOX" description="VMPAYMENT_SAGEPAYNOW_SANDBOX_DESC" >
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
-	</param>
 
 	<param   type="spacer" default="VMPAYMENT_SAGEPAYNOW_VIRTUEMART_PARAMS" level="level1" />
 	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_SAGEPAYNOW_LOGOS"

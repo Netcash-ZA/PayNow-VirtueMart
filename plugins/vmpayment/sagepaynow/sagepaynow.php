@@ -173,6 +173,10 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		return $SQLfields;
 	}
 	function plgVmConfirmedOrder($cart, $order) {
+		
+		require_once ("sagepaynow_common.inc");
+		pnlog("plgVmConfirmedOrder");
+		
 		if (! ($method = $this->getVmPluginMethod ( $order ['details'] ['BT']->virtuemart_paymentmethod_id ))) {
 			return null;
 		}
@@ -204,6 +208,7 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
 		$db = &JFactory::getDBO ();
 		$db->setQuery ( $q );
+		// TODO Currency code not used and can be removed
 		$currency_code_3 = $db->loadResult ();
 		
 		$paymentCurrency = CurrencyDisplay::getInstance ( $method->payment_currency );
@@ -212,24 +217,27 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		
 		$sagepaynowDetails = $this->_getSagepaynowDetails ( $method );
 		
-		
+		pnlog("sagepaynowDetails:" . print_r($sagepaynowDetails,true) );
+				
 		$testReq = $method->debug == 1 ? 'YES' : 'NO';
 		$post_variables = Array (
 				// Merchant details
-				'service_key' => $sagepaynowDetails ['service_key'],
+				'm1' => $sagepaynowDetails ['service_key'],
+				'm2' => '24ade73c-98cf-47b3-99be-cc7b867b3080',
 				'return_url' => JROUTE::_ ( JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id . "&o_id={$order['details']['BT']->order_number}" ),
 				'cancel_url' => JROUTE::_ ( JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order ['details'] ['BT']->order_number . '&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id ),
-				'notify_url' => JROUTE::_ ( JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&on=' . $order ['details'] ['BT']->order_number . '&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id . "&XDEBUG_SESSION_START=session_name" . "&o_id={$order['details']['BT']->order_number}" ),
+				'm10' => 'option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&on=' . $order ['details'] ['BT']->order_number . '&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id . "&XDEBUG_SESSION_START=session_name" . "&o_id={$order['details']['BT']->order_number}" ,
 				
 				// Item details
-				'item_name' => JText::_ ( 'VMPAYMENT_sagepaynow_ORDER_NUMBER' ) . ': ' . $order ['details'] ['BT']->order_number,
+				'p3' => JText::_ ( 'VMPAYMENT_sagepaynow_ORDER_NUMBER' ) . ': ' . $order ['details'] ['BT']->order_number,
 				'item_description' => "",
-				'amount' => number_format ( sprintf ( "%01.2f", $totalInPaymentCurrency ), 2, '.', '' ),
+				'p4' => number_format ( sprintf ( "%01.2f", $totalInPaymentCurrency ), 2, '.', '' ),
 				'm_payment_id' => $order ['details'] ['BT']->virtuemart_paymentmethod_id,
 				'currency_code' => $currency_code_3,
-				'custom_str1' => $order ['details'] ['BT']->order_number,
-				'custom_int1' => "" 
+				'p2' => $order ['details'] ['BT']->order_number				
 		);
+		
+		pnlog("post_variables:" . print_r($post_variables,true) );
 		
 		// Prepare data that should be stored in the database
 		$dbValues ['order_number'] = $order ['details'] ['BT']->order_number;
@@ -362,6 +370,7 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 			
 			// Posted variables from IPN
 			$pnData = pnGetData ();
+			// TODO Redundant sagepaynow_data variable
 			$sagepaynow_data = $pnData;
 			
 			pnlog ( 'Sage Pay Now Data: ' . print_r ( $pnData, true ) );
@@ -372,17 +381,23 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 			}
 		}
 		
-		$order_number = $sagepaynow_data ['custom_str1'];
-		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ( $sagepaynow_data ['custom_str1'] );
+		pnlog("Examining data...");
+		
+		$order_number = $sagepaynow_data ['Reference'];
+		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ( $sagepaynow_data ['Reference'] );
 		$this->logInfo ( 'plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message' );
 		
 		if (! $virtuemart_order_id) {
 			$this->_debug = true; // force debug here
 			$this->logInfo ( 'plgVmOnPaymentNotification: virtuemart_order_id not found ', 'ERROR' );
+			pnlog('plgVmOnPaymentNotification: virtuemart_order_id not found');
+			// TODO More graceful redirect needed here
 			// send an email to admin, and ofc not update the order status: exit is fine
 			// $this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_SAGEPAYNOW_ERROR_EMAIL_SUBJECT'), JText::_('VMPAYMENT_SAGEPAYNOW_UNKNOWN_ORDER_ID'));
 			exit ();
 		}
+		
+		pnlog("Order OK...");
 		
 		$vendorId = 0;
 		$payment = $this->getDataByOrderId ( $virtuemart_order_id );
@@ -402,24 +417,12 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		
 		pnlog ( 'Sage Pay Now IPN call received' );
 		
-		// // Verify data received
-		if (! $pnError) {
-			pnlog ( 'Verify data received' );
-			
-			$pnValid = pnValidData ( $pnHost, $pnParamString );
-			
-			if (! $pnValid) {
-				$pnError = true;
-				$pnErrMsg = PN_ERR_BAD_ACCESS;
-			}
-		}
-		
 		// // Check data against internal order
 		if (! $pnError && ! $pnDone) {
 			// pnlog( 'Check data against internal order' );
 			
 			// Check order amount
-			if (! pnAmountsEqual ( $pnData ['amount_gross'], $payment->payment_order_total )) {
+			if (! pnAmountsEqual ( $pnData ['Amount'], $payment->payment_order_total )) {
 				$pnError = true;
 				$pnErrMsg = PN_ERR_AMOUNT_MISMATCH;
 			}
@@ -429,27 +432,22 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		if (! $pnError && ! $pnDone) {
 			pnlog ( 'Check status and update order' );
 			
-			$sessionid = $pnData ['custom_str1'];
+			$sessionid = $pnData ['Reference'];
 			$transaction_id = $pnData ['Trace'];
 			
-			switch ($pnData ['payment_status']) {
-				case 'COMPLETE' :
+			switch ($pnData ['TransactionAccepted']) {
+				case 'true' :
 					pnlog ( '- Complete' );
 					$new_status = $method->status_success;
 					break;
 				
-				case 'FAILED' :
+				case 'false' :
 					pnlog ( '- Failed' );
 					$new_status = $method->status_canceled;
 					break;
-				
-				case 'PENDING' :
-					pnlog ( '- Pending' );
-					
-					// Need to wait for "Completed" before processing
-					break;
-				
+
 				default :
+					pnlog ( '- Unknown - error in plgVmOnPaymentNotification' );
 					// If unknown status, do nothing (safest course of action)
 					break;
 			}
@@ -470,14 +468,17 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$response_fields ['payment_currency'] = $payment->payment_currency;
 		$response_fields ['payment_order_total'] = $totalInPaymentCurrency;
 		$response_fields ['tax_id'] = $method->tax_id;
-		$response_fields ['sagepaynow_response'] = $pnData ['TransactionAccepted'];
+		
+		$response_fields ['sagepaynow_response'] = $pnData ['TransactionAccepted'] . ' ' . $pnData['Reason'];
 		$response_fields ['sagepaynow_response_payment_date'] = date ( 'Y-m-d H:i:s' );
 		
 		$this->storePSPluginInternalData ( $response_fields );
 		
 		$this->logInfo ( 'plgVmOnPaymentNotification return new_status:' . $new_status, 'message' );
 		
-		if ($virtuemart_order_id && $pnData ['TransactionAccepted'] == 'TRUE') {
+		pnlog("Doing final checks...");
+		
+		if ($virtuemart_order_id && $pnData ['TransactionAccepted'] == 'true') {
 			// send the email only if payment has been accepted
 			if (! class_exists ( 'VirtueMartModelOrders' ))
 				require (JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
@@ -489,11 +490,27 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 			$order ['comments'] = JTExt::sprintf ( 'VMPAYMENT_SAGEPAYNOW_PAYMENT_CONFIRMED', $order_number );
 			$modelOrder->updateStatusForOneOrder ( $virtuemart_order_id, $order, true );
 		}
+				
 		
-		$this->emptyCart ( $return_context );
+
+		// Redirect to return page if true, otherwise to failed page
+		// TODO Examine server error log for object errors
+		if ($pnData['TransactionAccepted'] == 'true') {
+			$link = 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $_GET['pm'] . "&o_id={$pnData['Reference']}";
+			$msg = 'Your order was placed succesfully.';
+			$this->emptyCart ( $return_context );
+		} else {
+			$link = 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $pnData['Reference'] . '&pm=' . $_GET['pm'];
+			$msg = "Your order failed because '" . $pnData ['Reason'] . "'";
+		}
 		
+		pnlog("IPN procedure completed");
 		// Close log
 		pnlog ( '', true );
+		
+		$app = JFactory::getApplication();
+		$app->redirect($link, $msg, $msgType='message');
+		
 		return true;
 	}
 	
