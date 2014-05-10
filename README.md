@@ -61,6 +61,9 @@ B. VirueMart Steps:
 
 You are now ready to transact. Remember to turn of "Make test mode active:" when you are ready for production.
 
+Here is a screenshot of what the VirtueMart settings screen for Sage Pay Now looks like:
+![alt tag](http://virtuemart.gatewaymodules.com/screenshot1.png)
+
 Revision History
 ----------------
 
@@ -74,6 +77,6 @@ Demo Site
 There is a demo site if you want to see Joomla VirtueMart and the Sage Pay Now gateway in action:
 http://virtuemart.gatewaymodules.com
 
-Feedback, issues & feature Requests
+Feedback, issues & feature requests
 -----------------------------------
 If you have any feedback please contact Sage Pay South Africa or log an issue on GitHub
