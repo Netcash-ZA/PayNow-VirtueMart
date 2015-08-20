@@ -219,6 +219,16 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 
 		pnlog("sagepaynowDetails:" . print_r($sagepaynowDetails,true) );
 
+		// require_once( CLASSPATH . 'ps_user.php' );
+		// $userinfo =& ps_user::getUserInfo($current_user->id);
+		// $firstname =& $userinfo->f("first_name");
+		// echo $firstname;
+
+		$customerName = "{$order['details']['BT']->first_name} {$order['details']['BT']->last_name}";
+		$orderID = $order['details']['BT']->order_number;
+		$customerID = $order['details']['BT']->virtuemart_user_id;
+		$sageGUID = "TBC";
+
 		$testReq = $method->debug == 1 ? 'YES' : 'NO';
 		$post_variables = Array (
 				// Merchant details
@@ -229,12 +239,16 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 				'm10' => 'option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&on=' . $order ['details'] ['BT']->order_number . '&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id . "&XDEBUG_SESSION_START=session_name" . "&o_id={$order['details']['BT']->order_number}" ,
 
 				// Item details
-				'p3' => JText::_ ( 'VMPAYMENT_sagepaynow_ORDER_NUMBER' ) . ': ' . $order ['details'] ['BT']->order_number,
+				// 'p3' => JText::_ ( 'VMPAYMENT_sagepaynow_ORDER_NUMBER' ) . ': ' . $order ['details'] ['BT']->order_number,
 				'item_description' => "",
 				'p4' => number_format ( sprintf ( "%01.2f", $totalInPaymentCurrency ), 2, '.', '' ),
 				'm_payment_id' => $order ['details'] ['BT']->virtuemart_paymentmethod_id,
 				'currency_code' => $currency_code_3,
-				'p2' => $order ['details'] ['BT']->order_number
+				'p2' => $order ['details'] ['BT']->order_number,
+
+				'p3' => "{$customerName} | {$orderID}",
+				'm3' => "$sageGUID",
+				'm4' => "{$customerID}",
 		);
 
 		pnlog("post_variables:" . print_r($post_variables,true) );
