@@ -227,13 +227,13 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$customerName = "{$order['details']['BT']->first_name} {$order['details']['BT']->last_name}";
 		$orderID = $order['details']['BT']->order_number;
 		$customerID = $order['details']['BT']->virtuemart_user_id;
-		$sageGUID = "TBC";
+		$sageGUID = "adf7fac4-5721-4154-baef-0ed5f5510aae";
 
 		$testReq = $method->debug == 1 ? 'YES' : 'NO';
 		$post_variables = Array (
 				// Merchant details
 				'm1' => $sagepaynowDetails ['service_key'],
-				'm2' => '24ade73c-98cf-47b3-99be-cc7b867b3080',
+				'm2' => $sageGUID,
 				'return_url' => JROUTE::_ ( JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id . "&o_id={$order['details']['BT']->order_number}" ),
 				'cancel_url' => JROUTE::_ ( JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order ['details'] ['BT']->order_number . '&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id ),
 				'm10' => 'option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&on=' . $order ['details'] ['BT']->order_number . '&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id . "&XDEBUG_SESSION_START=session_name" . "&o_id={$order['details']['BT']->order_number}" ,
@@ -247,7 +247,7 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 				'p2' => $order ['details'] ['BT']->order_number,
 
 				'p3' => "{$customerName} | {$orderID}",
-				'm3' => "$sageGUID",
+				// 'm3' => "$sageGUID",
 				'm4' => "{$customerID}",
 		);
 
