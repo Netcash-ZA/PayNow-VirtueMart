@@ -411,7 +411,7 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 			exit ();
 		}
 
-		pnlog("Order OK...");
+		pnlog("Order OK... {$virtuemart_order_id}");
 
 		$vendorId = 0;
 		$payment = $this->getDataByOrderId ( $virtuemart_order_id );
