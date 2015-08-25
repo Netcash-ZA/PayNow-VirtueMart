@@ -1,7 +1,7 @@
 Sage Pay Now VirtueMart Payment Gateway Module
 ==============================================
 
-Revision 1.0.1
+Revision 2.0.0
 
 Introduction
 ------------
@@ -14,7 +14,7 @@ Download the files from GitHub to a temporary location:
 
 The ZIP file contains all the source code, but the only file that you will require for VirtueMart is in the root folder and it's called:
 
-* mod-virtuemart_1_0.zip
+* mod-virtuemart_2_0.zip
 
 Note the location of this file.
 
@@ -43,7 +43,10 @@ A. Sage Pay Now Gateway Server Configuration Steps:
 8. The Accept and Decline URLs should both be:
 	http://virtuemart_installation/index.php
 
-9. It is highly recommended that you "Make test mode active:" while you are still testing your site.
+9. The Notify and Redirect URLs should both be:
+	http://virtuemart_installation/plugins/vmpayment/sagepaynow/paynow_callback.php
+
+10. It is highly recommended that you "Make test mode active:" while you are still testing your site.
 
 B. VirueMart Steps:
 
@@ -67,10 +70,11 @@ Here is a screenshot of what the VirtueMart settings screen for Sage Pay Now loo
 Revision History
 ----------------
 
+* 25 Aug 2015/2.0.0 Add support for EFT/Retail payments
 * 10 May 2014/1.0.1 Improved documentation
 * 09 Mar 2014/1.0.0 First version
 
-Tested with Joomla 2.5.19 and VirtueMart 2.6.0
+Tested with Joomla 3.4 and VirtueMart 3.0.9
 
 Demo Site
 ---------
