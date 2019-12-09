@@ -7,8 +7,12 @@ defined ( '_JEXEC' ) or die ( 'Direct Access to ' . basename ( __FILE__ ) . ' is
 if (! class_exists ( 'vmPSPlugin' ))
 	require (JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
-define ( 'SANDBOX_SERVICE_KEY', '46f0cd694581a' );
 class plgVMPaymentSagePayNow extends vmPSPlugin {
+
+	function display() {
+		parent::display(false); //true asks for caching.
+	}
+
 	// Instance of class
 	public static $_this = false;
 	function __construct(& $subject, $config) {
@@ -18,6 +22,10 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$this->tableFields = array_keys ( $this->getTableSQLFields () );
 
 		$varsToPush = array (
+				'sagepaynow_account_number' => array (
+						'',
+						'char'
+				),
 				'sagepaynow_service_key' => array (
 						'',
 						'char'
@@ -33,14 +41,6 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 				'sandbox' => array (
 						0,
 						'int'
-				),
-				'sandbox_service_key' => array (
-						'',
-						'char'
-				),
-				'sandbox_merchant_id' => array (
-						'',
-						'char'
 				),
 				'payment_logos' => array (
 						'',
@@ -98,6 +98,15 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		);
 
 		return $sagepaynowDetails;
+	}
+
+	protected function storePSPluginInternalData($values, $primaryKey = 0, $preload = false) {
+		die('Nothing');
+		// Validate Service Keys etc
+		// if(isset($_GET['test'])) {
+			JError::raiseError(422, "Couldn't save data.");
+		// }
+		return parent::storePSPluginInternalData(values, $primaryKey, $preload);
 	}
 
 	function _getPaymentResponseHtml($sagepaynowData, $payment_name) {

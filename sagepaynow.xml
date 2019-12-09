@@ -40,9 +40,14 @@
 
         	<!-- <field type="vmjpluginwarning" /> -->
             <fieldset name="basic" addpath="/plugins/vmpayment/sagepaynow/sagepaynow/fields">
-        	<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_PARAMS" level="level1" />
+
+			<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_PARAMS" level="level1" />
         	<field type="text" name="sagepaynow_service_key"  size="50" label="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY"
                      default="" description="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY_DESC" />
+
+			<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_PARAMS" level="level1" />
+        	<field type="text" name="sagepaynow_account_number"  size="50" label="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER"
+                     default="" description="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER_DESC" />
 
         	<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_VIRTUEMART_PARAMS" level="level1" />
         	<field name="payment_logos" type="vmfiles" label="VMPAYMENT_SAGEPAYNOW_LOGOS"
@@ -61,6 +66,11 @@
 
             <!-- <fieldset addpath="/administrator/components/com_virtuemart/elements"> -->
         	<field type="vmjpluginwarning" />
+
+			<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_FIELDS" level="level1" />
+        	<field type="text" name="sagepaynow_account_number"  size="50" label="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER"
+                     default="" description="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER_DESC" />
+
         	<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_FIELDS" level="level1" />
         	<field type="text" name="sagepaynow_service_key"  size="50" label="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY"
                      default="" description="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY_DESC" />
@@ -71,12 +81,12 @@
                      	default="default" hide_default="1" hide_none="1"
                      	stripext="0"  exclude="^_" />
 
-        	<field   type="spacer" default="VMPAYMENT_SAGEPAYNOW_SANDBOX_FIELDS" level="level1" />
-
+        	<!-- <field   type="spacer" default="VMPAYMENT_SAGEPAYNOW_SANDBOX_FIELDS" level="level1" />
         	<field name="sandbox" type="radio" default="1" label="VMPAYMENT_SAGEPAYNOW_SANDBOX" description="VMPAYMENT_SAGEPAYNOW_SANDBOX_DESC" >
         	    <option value="0">COM_VIRTUEMART_NO</option>
         	    <option value="1">COM_VIRTUEMART_YES</option>
         	</field>
+			-->
 
         	<field   type="spacer" default="VMPAYMENT_SAGEPAYNOW_VIRTUEMART_FIELDS" level="level1" />
 
