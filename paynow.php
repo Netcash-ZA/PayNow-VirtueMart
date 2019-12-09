@@ -101,10 +101,10 @@ class plgVMPaymentPayNow extends vmPSPlugin {
 	}
 
 	protected function storePSPluginInternalData($values, $primaryKey = 0, $preload = false) {
-		die('Nothing');
+		// die('Nothing');
 		// Validate Service Keys etc
 		// if(isset($_GET['test'])) {
-			JError::raiseError(422, "Couldn't save data.");
+			// JError::raiseError(422, "Couldn't save data.");
 		// }
 		return parent::storePSPluginInternalData(values, $primaryKey, $preload);
 	}
@@ -215,7 +215,7 @@ class plgVMPaymentPayNow extends vmPSPlugin {
 		$vendor = $vendorModel->getVendor ();
 		$this->getPaymentCurrency ( $method );
 		$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
-		$db = &JFactory::getDBO ();
+		$db = JFactory::getDBO ();
 		$db->setQuery ( $q );
 		// TODO Currency code not used and can be removed
 		$currency_code_3 = $db->loadResult ();
@@ -258,6 +258,7 @@ class plgVMPaymentPayNow extends vmPSPlugin {
 				'p3' => "{$customerName} | {$orderID}",
 				// 'm3' => "$sageGUID",
 				'm4' => "{$customerID}",
+				'm14' => "1",
 		);
 
 		pnlog("post_variables:" . print_r($post_variables,true) );
@@ -424,6 +425,21 @@ class plgVMPaymentPayNow extends vmPSPlugin {
 
 		$vendorId = 0;
 		$payment = $this->getDataByOrderId ( $virtuemart_order_id );
+
+		$db = &JFactory::getDBO();
+		// $var_cls = new JConfig(); // object of the class
+		// $dbprefix = $var_cls->dbprefix;
+		$query = "SELECT * FROM #__virtuemart_orders WHERE virtuemart_order_id =".$db->quote($virtuemart_order_id);
+		$db->setQuery($query);
+		$payment = $db->loadObject();
+
+		if (! $payment) {
+			$msg = 'getDataByOrderId payment not found: exit ';
+			$this->logInfo ( $msg, 'ERROR' );
+			pnlog($msg);
+			return null;
+		}
+
 		$method = $this->getVmPluginMethod ( $payment->virtuemart_paymentmethod_id );
 		//$pnHost = ($method->sandbox ? 'sandbox' : 'www') . '.netcash.co.za';
 
@@ -432,10 +448,6 @@ class plgVMPaymentPayNow extends vmPSPlugin {
 		}
 
 		$this->_debug = $method->debug;
-		if (! $payment) {
-			$this->logInfo ( 'getDataByOrderId payment not found: exit ', 'ERROR' );
-			return null;
-		}
 		$this->logInfo ( 'paynow_data ' . implode ( '   ', $paynow_data ), 'message' );
 
 		pnlog ( 'Netcash Pay Now IPN call received' );

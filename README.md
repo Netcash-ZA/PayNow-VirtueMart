@@ -26,7 +26,7 @@ Prerequisites:
 You will need:
 * Netcash Pay Now login credentials
 * Netcash Pay Now Service key
-* OpenCart admin login credentials
+* Joomla / VirtueMart admin login credentials
 
 A. Netcash Pay Now Gateway Server Configuration Steps:
 
@@ -34,7 +34,7 @@ A. Netcash Pay Now Gateway Server Configuration Steps:
 	https://merchant.netcash.co.za/SiteLogin.aspx
 2. Type in your Netcash Username, Password, and PIN
 2. Click on Account Profile
-3. Click Sage Connect
+3. Click Netcash Connect
 4. Click on Pay Now
 5. Click "Active:"
 6. Type in your Email address
@@ -52,7 +52,7 @@ B. VirueMart Steps:
 
 1. Log into Joomla as admin
 2. Click on Extensions / Extension Manager
-3. Click "Choose File" to select the file you download from Github (mod-virtuemart_1_0.zip)
+3. Click "Choose File" to select the file you download from Github (E.g., mod-virtuemart.zip)
 4. Click "Upload & Install"
 5. While still in the Extension Manager, click "Manage"
 6. Find "Netcash Pay Now" which should return "VM Payment - Netcash Pay Now"
@@ -62,16 +62,18 @@ B. VirueMart Steps:
 10. Enter your Netcash Pay Now Service Key here:
 11. Click Save & Close
 
+B2. Alternatively,
+
+1. Upload the files via FTP to the "plugins/vmpayment/paynow" folder
+2. Then, go to Extensions > Discover and click "Discover" in to top right
+3. A list should appear, look for "Netcash Pay Now" and select it and click "install"
+5. Navigate to VirtueMart / Payment Method
+6. Click Netcash Pay Now and then look for the "Configuration" tab at the top right of the page.
+7. Enter your Netcash Pay Now Service Key here:
+8. Click Save & Close
+
+
 You are now ready to transact. Remember to turn of "Make test mode active:" when you are ready for production.
-
-Revision History
-----------------
-
-* 25 Aug 2015/2.0.0 Add support for EFT/Retail payments
-* 10 May 2014/1.0.1 Improved documentation
-* 09 Mar 2014/1.0.0 First version
-
-Tested with Joomla 3.4 and VirtueMart 3.0.9
 
 
 Feedback, issues & feature requests
