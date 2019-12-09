@@ -25,8 +25,8 @@ function pn_load_system() {
 	if (!class_exists( 'VmModel' ))
 		require(JPATH_BASE . '/administrator' . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'vmmodel.php');
 
-	if (!class_exists( 'plgVMPaymentSagePayNow' ))
-		require "sagepaynow.php";
+	if (!class_exists( 'plgVMPaymentPayNow' ))
+		require "paynow.php";
 
 	return $app;
 }
@@ -35,7 +35,7 @@ function pn_load_system() {
  * Load PayNow functions/files
  */
 function pn_load_paynow() {
-	require_once 'sagepaynow_common.inc';
+	require_once 'paynow_common.inc';
 	return;
 }
 

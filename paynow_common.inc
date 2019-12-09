@@ -1,6 +1,6 @@
 <?php
 /**
- * sagepaynow_common.inc
+ * paynow_common.inc
  */
 
 define( 'PN_DEBUG', true);
@@ -11,7 +11,7 @@ define( 'PN_SOFTWARE_NAME', 'Virtuemart' );
 // TODO Tested Joomla version: Joomla! 2.5.19
 // VirtueMart version? 2.0.6?
 define( 'PN_SOFTWARE_VER', "2.0.6" );
-define( 'PN_MODULE_NAME', 'SagePayNow-Virtuemart' );
+define( 'PN_MODULE_NAME', 'PayNow-Virtuemart' );
 define( 'PN_MODULE_VER', '1.0.0' );
 
 // Features
@@ -40,7 +40,7 @@ define( 'PN_EPSILON', 0.01 );
 define( 'PN_ERR_AMOUNT_MISMATCH', 'Amount mismatch' );
 define( 'PN_ERR_BAD_ACCESS', 'Bad access of page' );
 define( 'PN_ERR_BAD_SOURCE_IP', 'Bad source IP address' );
-define( 'PN_ERR_CONNECT_FAILED', 'Failed to connect to Sage Pay Now' );
+define( 'PN_ERR_CONNECT_FAILED', 'Failed to connect to Netcash Pay Now' );
 define( 'PN_ERR_INVALID_SIGNATURE', 'Security signature mismatch' );
 define( 'PN_ERR_NO_SESSION', 'No saved session found for IPN transaction' );
 define( 'PN_ERR_ORDER_ID_MISSING_URL', 'Order ID not present in URL' );
@@ -86,7 +86,7 @@ function pnlog( $msg = '', $close = false )
             if( !$fh )
             {
                 $pathinfo = pathinfo( __FILE__ );
-                $fh = fopen( $pathinfo['dirname'] .'/sagepaynow.log', 'a+' );
+                $fh = fopen( $pathinfo['dirname'] .'/paynow.log', 'a+' );
             }
 
             // If file was successfully created
@@ -102,7 +102,7 @@ function pnlog( $msg = '', $close = false )
 
 /**
  * pnGetData
- *  
+ *
  */
 function pnGetData()
 {
@@ -122,14 +122,14 @@ function pnGetData()
 
 /**
  * pnAmountsEqual
- * 
+ *
  * Checks to see whether the given amounts are equal using a proper floating
  * point comparison with an Epsilon which ensures that insignificant decimal
  * places are ignored in the comparison.
- * 
+ *
  * eg. 100.00 is equal to 100.0001
  *
- * @param $amount1 Float 1st amount for comparison 
+ * @param $amount1 Float 1st amount for comparison
  * @param $amount2 Float 2nd amount for comparison
  */
 function pnAmountsEqual( $amount1, $amount2 )

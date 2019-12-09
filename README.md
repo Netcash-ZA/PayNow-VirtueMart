@@ -1,11 +1,11 @@
-Sage Pay Now VirtueMart Payment Gateway Module
+Netcash Pay Now VirtueMart Payment Gateway Module
 ==============================================
 
 Revision 2.0.0
 
 Introduction
 ------------
-Sage Pay South Africa's Pay Now third party gateway integration for Joomla VirtueMart
+Netcash South Africa's Pay Now third party gateway integration for Joomla VirtueMart
 
 Installation Instructions
 -------------------------
@@ -24,15 +24,15 @@ Configuration
 Prerequisites:
 
 You will need:
-* Sage Pay Now login credentials
-* Sage Pay Now Service key
+* Netcash Pay Now login credentials
+* Netcash Pay Now Service key
 * OpenCart admin login credentials
 
-A. Sage Pay Now Gateway Server Configuration Steps:
+A. Netcash Pay Now Gateway Server Configuration Steps:
 
-1. Log into your Sage Pay Now Gateway Server configuration page:
-	https://merchant.sagepay.co.za/SiteLogin.aspx
-2. Type in your Sage Pay Username, Password, and PIN
+1. Log into your Netcash Pay Now Gateway Server configuration page:
+	https://merchant.netcash.co.za/SiteLogin.aspx
+2. Type in your Netcash Username, Password, and PIN
 2. Click on Account Profile
 3. Click Sage Connect
 4. Click on Pay Now
@@ -44,7 +44,7 @@ A. Sage Pay Now Gateway Server Configuration Steps:
 	http://virtuemart_installation/index.php
 
 9. The Notify and Redirect URLs should both be:
-	http://virtuemart_installation/plugins/vmpayment/sagepaynow/paynow_callback.php
+	http://virtuemart_installation/plugins/vmpayment/paynow/paynow_callback.php
 
 10. It is highly recommended that you "Make test mode active:" while you are still testing your site.
 
@@ -55,11 +55,11 @@ B. VirueMart Steps:
 3. Click "Choose File" to select the file you download from Github (mod-virtuemart_1_0.zip)
 4. Click "Upload & Install"
 5. While still in the Extension Manager, click "Manage"
-6. Find "Sage Pay Now" which should return "VM Payment - Sage Pay Now"
-7. Click on the checkbox to select the Sage Pay Now module and then click "Enable"
+6. Find "Netcash Pay Now" which should return "VM Payment - Netcash Pay Now"
+7. Click on the checkbox to select the Netcash Pay Now module and then click "Enable"
 8. Navigate to VirtueMart / Payment Method
-9. Click Sage Pay Now and then look for the "Configuration" tab at the top right of the page.
-10. Enter your Sage Pay Now Service Key here:
+9. Click Netcash Pay Now and then look for the "Configuration" tab at the top right of the page.
+10. Enter your Netcash Pay Now Service Key here:
 11. Click Save & Close
 
 You are now ready to transact. Remember to turn of "Make test mode active:" when you are ready for production.
@@ -76,4 +76,4 @@ Tested with Joomla 3.4 and VirtueMart 3.0.9
 
 Feedback, issues & feature requests
 -----------------------------------
-If you have any feedback please contact Sage Pay South Africa or log an issue on GitHub
+If you have any feedback please contact Netcash South Africa or log an issue on GitHub

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="3.0" type="plugin" group="vmpayment" >
 
-    <name>VM Payment - Sage Pay Now</name>
+    <name>VM Payment - Netcash Pay Now</name>
     <creationDate>April 2014</creationDate>
-    <author>Sage Pay</author>
-    <authorUrl>http://www.sagepay.co.za/sagepay/</authorUrl>
-    <copyright>Copyright (C) 2014 Sage Pay. All rights reserved.</copyright>
+    <author>Netcash</author>
+    <authorUrl>http://www.netcash.co.za/sagepay/</authorUrl>
+    <copyright>Copyright (C) 2014 Netcash. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
     <version>2.0</version>
-    <description><![CDATA[<a href="http://www.sagepay.co.za/sagepay/pay_now_gateway.asp" target="_blank">Sage Pay Now</a> ]]></description>
+    <description><![CDATA[<a href="http://www.netcash.co.za/sagepay/pay_now_gateway.asp" target="_blank">Netcash Pay Now</a> ]]></description>
 
-    <!-- <media plugin="sagepaynow" folder="sagepaynow" destination="">
-        <filename>sagepaynow.php</filename>
-        <filename>sagepaynow_common.inc</filename>
+    <!-- <media plugin="paynow" folder="paynow" destination="">
+        <filename>paynow.php</filename>
+        <filename>paynow_common.inc</filename>
         <filename>index.html</filename>
         <filename>Pay-Now-Button.jpg</filename>
         <folder>language</folder>
     </media> -->
 
     <files>
-        <filename plugin="sagepaynow">sagepaynow.php</filename>
-        <filename>sagepaynow_common.inc</filename>
+        <filename plugin="paynow">paynow.php</filename>
+        <filename>paynow_common.inc</filename>
         <filename>index.html</filename>
         <folder>language</folder>
     </files>
@@ -30,7 +30,7 @@
     </media> -->
 
     <!-- <languages>
-	   <language tag="en-GB">administrator\language\en-GB\en-GB.plg_vmpayment_sagepaynow.ini</language>
+	   <language tag="en-GB">administrator\language\en-GB\en-GB.plg_vmpayment_paynow.ini</language>
     </languages> -->
 
     <vmconfig>
@@ -39,14 +39,14 @@
         <fields name="params">
 
         	<!-- <field type="vmjpluginwarning" /> -->
-            <fieldset name="basic" addpath="/plugins/vmpayment/sagepaynow/sagepaynow/fields">
+            <fieldset name="basic" addpath="/plugins/vmpayment/paynow/paynow/fields">
 
 			<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_PARAMS" level="level1" />
-        	<field type="text" name="sagepaynow_service_key"  size="50" label="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY"
+        	<field type="text" name="paynow_service_key"  size="50" label="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY"
                      default="" description="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY_DESC" />
 
 			<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_PARAMS" level="level1" />
-        	<field type="text" name="sagepaynow_account_number"  size="50" label="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER"
+        	<field type="text" name="paynow_account_number"  size="50" label="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER"
                      default="" description="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER_DESC" />
 
         	<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_VIRTUEMART_PARAMS" level="level1" />
@@ -68,11 +68,11 @@
         	<field type="vmjpluginwarning" />
 
 			<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_FIELDS" level="level1" />
-        	<field type="text" name="sagepaynow_account_number"  size="50" label="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER"
+        	<field type="text" name="paynow_account_number"  size="50" label="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER"
                      default="" description="VMPAYMENT_SAGEPAYNOW_ACCOUNT_NUMBER_DESC" />
 
         	<field type="spacer" default="VMPAYMENT_SAGEPAYNOW_FIELDS" level="level1" />
-        	<field type="text" name="sagepaynow_service_key"  size="50" label="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY"
+        	<field type="text" name="paynow_service_key"  size="50" label="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY"
                      default="" description="VMPAYMENT_SAGEPAYNOW_SERVICE_KEY_DESC" />
 
         	<field	name="payment_logos" type="vmfiles" label="VMPAYMENT_SAGEPAYNOW_LOGOS"

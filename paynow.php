@@ -1,13 +1,13 @@
 <?php
 /**
- * sagepaynow.php
+ * paynow.php
  */
 defined ( '_JEXEC' ) or die ( 'Direct Access to ' . basename ( __FILE__ ) . ' is not allowed.' );
 
 if (! class_exists ( 'vmPSPlugin' ))
 	require (JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
-class plgVMPaymentSagePayNow extends vmPSPlugin {
+class plgVMPaymentPayNow extends vmPSPlugin {
 
 	function display() {
 		parent::display(false); //true asks for caching.
@@ -22,15 +22,15 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$this->tableFields = array_keys ( $this->getTableSQLFields () );
 
 		$varsToPush = array (
-				'sagepaynow_account_number' => array (
+				'paynow_account_number' => array (
 						'',
 						'char'
 				),
-				'sagepaynow_service_key' => array (
+				'paynow_service_key' => array (
 						'',
 						'char'
 				),
-				'sagepaynow_verified_only' => array (
+				'paynow_verified_only' => array (
 						'',
 						'int'
 				),
@@ -92,12 +92,12 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 	}
 
 	function _getSagepaynowDetails($method) {
-		$sagepaynowDetails = array (
-				'service_key' => $method->sagepaynow_service_key,
-				'url' => 'https://paynow.sagepay.co.za/site/paynow.aspx'
+		$paynowDetails = array (
+				'service_key' => $method->paynow_service_key,
+				'url' => 'https://paynow.netcash.co.za/site/paynow.aspx'
 		);
 
-		return $sagepaynowDetails;
+		return $paynowDetails;
 	}
 
 	protected function storePSPluginInternalData($values, $primaryKey = 0, $preload = false) {
@@ -109,10 +109,10 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		return parent::storePSPluginInternalData(values, $primaryKey, $preload);
 	}
 
-	function _getPaymentResponseHtml($sagepaynowData, $payment_name) {
+	function _getPaymentResponseHtml($paynowData, $payment_name) {
 		$html = "";
 		/*
-		 * vmdebug('Sage Pay Now response', $sagepaynowData); $html = '<table>' . "\n"; $html .= $this->getHtmlRow('SAGEPAYNOW_PAYMENT_NAME', $payment_name); $html .= $this->getHtmlRow('SAGEPAYNOW_ORDER_NUMBER', $sagepaynowData['invoice']); $html .= $this->getHtmlRow('SAGEPAYNOW_AMOUNT', $sagepaynowData['mc_gross'] . " " . $sagepaynowData['mc_currency']); $html .= '</table>' . "\n";
+		 * vmdebug('Netcash Pay Now response', $paynowData); $html = '<table>' . "\n"; $html .= $this->getHtmlRow('SAGEPAYNOW_PAYMENT_NAME', $payment_name); $html .= $this->getHtmlRow('SAGEPAYNOW_ORDER_NUMBER', $paynowData['invoice']); $html .= $this->getHtmlRow('SAGEPAYNOW_AMOUNT', $paynowData['mc_gross'] . " " . $paynowData['mc_currency']); $html .= '</table>' . "\n";
 		 */
 
 		return $html;
@@ -161,7 +161,7 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		return false;
 	}
 	protected function getVmPluginCreateTableSQL() {
-		return $this->createTableSQL ( 'Payment Sage Pay Now Table' );
+		return $this->createTableSQL ( 'Payment Netcash Pay Now Table' );
 	}
 	function getTableSQLFields() {
 		$SQLfields = array (
@@ -175,15 +175,15 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 				'cost_per_transaction' => ' decimal(10,2) DEFAULT NULL ',
 				'cost_percent_total' => ' decimal(10,2) DEFAULT NULL ',
 				'tax_id' => ' smallint(1) DEFAULT NULL',
-				'sagepaynow_response' => ' varchar(255)  ',
-				'sagepaynow_response_payment_date' => ' char(28) DEFAULT NULL'
+				'paynow_response' => ' varchar(255)  ',
+				'paynow_response_payment_date' => ' char(28) DEFAULT NULL'
 		);
 
 		return $SQLfields;
 	}
 	function plgVmConfirmedOrder($cart, $order) {
 
-		require_once ("sagepaynow_common.inc");
+		require_once ("paynow_common.inc");
 		pnlog("plgVmConfirmedOrder");
 
 		if (! ($method = $this->getVmPluginMethod ( $order ['details'] ['BT']->virtuemart_paymentmethod_id ))) {
@@ -224,9 +224,9 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$totalInPaymentCurrency = round ( $paymentCurrency->convertCurrencyTo ( $method->payment_currency, $order ['details'] ['BT']->order_total, false ), 2 );
 		$cd = CurrencyDisplay::getInstance ( $cart->pricesCurrency );
 
-		$sagepaynowDetails = $this->_getSagepaynowDetails ( $method );
+		$paynowDetails = $this->_getSagepaynowDetails ( $method );
 
-		pnlog("sagepaynowDetails:" . print_r($sagepaynowDetails,true) );
+		pnlog("paynowDetails:" . print_r($paynowDetails,true) );
 
 		// require_once( CLASSPATH . 'ps_user.php' );
 		// $userinfo =& ps_user::getUserInfo($current_user->id);
@@ -241,14 +241,14 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$testReq = $method->debug == 1 ? 'YES' : 'NO';
 		$post_variables = Array (
 				// Merchant details
-				'm1' => $sagepaynowDetails ['service_key'],
+				'm1' => $paynowDetails ['service_key'],
 				'm2' => $sageGUID,
 				'return_url' => JROUTE::_ ( JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id . "&o_id={$order['details']['BT']->order_number}" ),
 				'cancel_url' => JROUTE::_ ( JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order ['details'] ['BT']->order_number . '&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id ),
 				'm10' => 'option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&on=' . $order ['details'] ['BT']->order_number . '&pm=' . $order ['details'] ['BT']->virtuemart_paymentmethod_id . "&XDEBUG_SESSION_START=session_name" . "&o_id={$order['details']['BT']->order_number}" ,
 
 				// Item details
-				// 'p3' => JText::_ ( 'VMPAYMENT_sagepaynow_ORDER_NUMBER' ) . ': ' . $order ['details'] ['BT']->order_number,
+				// 'p3' => JText::_ ( 'VMPAYMENT_paynow_ORDER_NUMBER' ) . ': ' . $order ['details'] ['BT']->order_number,
 				'item_description' => "",
 				'p4' => number_format ( sprintf ( "%01.2f", $totalInPaymentCurrency ), 2, '.', '' ),
 				'm_payment_id' => $order ['details'] ['BT']->virtuemart_paymentmethod_id,
@@ -266,7 +266,7 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$dbValues ['order_number'] = $order ['details'] ['BT']->order_number;
 		$dbValues ['payment_name'] = $this->renderPluginName ( $method, $order );
 		$dbValues ['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
-		$dbValues ['sagepaynow_custom'] = $return_context;
+		$dbValues ['paynow_custom'] = $return_context;
 		$dbValues ['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues ['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues ['payment_currency'] = $method->payment_currency;
@@ -274,15 +274,15 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$dbValues ['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ( $dbValues );
 
-		$html = '<form action="' . $sagepaynowDetails ['url'] . '" method="post" name="vm_sagepaynow_form" >';
-		$html .= '<input type="image" name="submit" src="\images\stories\virtuemart\payment\sagepaynow.png" alt="Click to pay with Sage Pay Now" />';
+		$html = '<form action="' . $paynowDetails ['url'] . '" method="post" name="vm_paynow_form" >';
+		$html .= '<input type="image" name="submit" src="\images\stories\virtuemart\payment\paynow.png" alt="Click to pay with Netcash Pay Now" />';
 		foreach ( $post_variables as $name => $value ) {
 			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars ( $value ) . '" />';
 		}
 		$html .= '</form>';
 
 		$html .= ' <script type="text/javascript">';
-		$html .= ' document.vm_sagepaynow_form.submit();';
+		$html .= ' document.vm_paynow_form.submit();';
 		$html .= ' </script>';
 		// 2 = don't delete the cart, don't send email and don't redirect
 		return $this->processConfirmedOrderPaymentResponse ( 2, $cart, $order, $html, $new_status );
@@ -370,8 +370,8 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		if (! class_exists ( 'VirtueMartModelOrders' ))
 			require (JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 
-			// Include Sage Pay Now Common File
-		require_once ("sagepaynow_common.inc");
+			// Include Netcash Pay Now Common File
+		require_once ("paynow_common.inc");
 
 		// Variable Initialization
 		$pnError = false;
@@ -381,22 +381,22 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$pnOrderId = '';
 		$pnParamString = '';
 
-		// // Notify Sage Pay Now that information has been received
+		// // Notify Netcash Pay Now that information has been received
 		if (! $pnError && ! $pnDone) {
 			header ( 'HTTP/1.0 200 OK' );
 			flush ();
 		}
 
-		// // Get data sent by Sage Pay Now
+		// // Get data sent by Netcash Pay Now
 		if (! $pnError && ! $pnDone) {
 			pnlog ( 'Get posted data' );
 
 			// Posted variables from IPN
 			$pnData = pnGetData ();
-			// TODO Redundant sagepaynow_data variable
-			$sagepaynow_data = $pnData;
+			// TODO Redundant paynow_data variable
+			$paynow_data = $pnData;
 
-			pnlog ( 'Sage Pay Now Data: ' . print_r ( $pnData, true ) );
+			pnlog ( 'Netcash Pay Now Data: ' . print_r ( $pnData, true ) );
 
 			if ($pnData === false) {
 				$pnError = true;
@@ -406,8 +406,8 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 
 		pnlog("Examining data...");
 
-		$order_number = $sagepaynow_data ['Reference'];
-		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ( $sagepaynow_data ['Reference'] );
+		$order_number = $paynow_data ['Reference'];
+		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ( $paynow_data ['Reference'] );
 		$this->logInfo ( 'plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message' );
 
 		if (! $virtuemart_order_id) {
@@ -425,7 +425,7 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$vendorId = 0;
 		$payment = $this->getDataByOrderId ( $virtuemart_order_id );
 		$method = $this->getVmPluginMethod ( $payment->virtuemart_paymentmethod_id );
-		//$pnHost = ($method->sandbox ? 'sandbox' : 'www') . '.sagepay.co.za';
+		//$pnHost = ($method->sandbox ? 'sandbox' : 'www') . '.netcash.co.za';
 
 		if (! $this->selectedThisElement ( $method->payment_element )) {
 			return false;
@@ -436,9 +436,9 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 			$this->logInfo ( 'getDataByOrderId payment not found: exit ', 'ERROR' );
 			return null;
 		}
-		$this->logInfo ( 'sagepaynow_data ' . implode ( '   ', $sagepaynow_data ), 'message' );
+		$this->logInfo ( 'paynow_data ' . implode ( '   ', $paynow_data ), 'message' );
 
-		pnlog ( 'Sage Pay Now IPN call received' );
+		pnlog ( 'Netcash Pay Now IPN call received' );
 
 		// // Check data against internal order
 		if (! $pnError && ! $pnDone) {
@@ -492,8 +492,8 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$response_fields ['payment_order_total'] = $totalInPaymentCurrency;
 		$response_fields ['tax_id'] = $method->tax_id;
 
-		$response_fields ['sagepaynow_response'] = $pnData ['TransactionAccepted'] . ' ' . $pnData['Reason'];
-		$response_fields ['sagepaynow_response_payment_date'] = date ( 'Y-m-d H:i:s' );
+		$response_fields ['paynow_response'] = $pnData ['TransactionAccepted'] . ' ' . $pnData['Reason'];
+		$response_fields ['paynow_response_payment_date'] = date ( 'Y-m-d H:i:s' );
 
 		$this->storePSPluginInternalData ( $response_fields );
 
@@ -563,9 +563,9 @@ class plgVMPaymentSagePayNow extends vmPSPlugin {
 		$currency_code_3 = $db->loadResult ();
 		$html = '<table class="adminlist">' . "\n";
 		$html .= $this->getHtmlHeaderBE ();
-		$html .= $this->getHtmlRowBE ( 'sagepaynow_PAYMENT_NAME', $paymentTable->payment_name );
-		// $html .= $this->getHtmlRowBE('sagepaynow_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total.' '.$currency_code_3);
-		$code = "sagepaynow_response_";
+		$html .= $this->getHtmlRowBE ( 'paynow_PAYMENT_NAME', $paymentTable->payment_name );
+		// $html .= $this->getHtmlRowBE('paynow_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total.' '.$currency_code_3);
+		$code = "paynow_response_";
 		foreach ( $paymentTable as $key => $value ) {
 			if (substr ( $key, 0, strlen ( $code ) ) == $code) {
 				$html .= $this->getHtmlRowBE ( $key, $value );
