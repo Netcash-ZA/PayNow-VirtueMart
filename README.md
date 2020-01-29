@@ -24,17 +24,17 @@ Configuration
 Prerequisites:
 
 You will need:
-* Netcash Pay Now login credentials
+* Netcash login credentials
 * Netcash Pay Now Service key
 * Joomla / VirtueMart admin login credentials
 
 A. Netcash Pay Now Gateway Server Configuration Steps:
 
-1. Log into your Netcash Pay Now Gateway Server configuration page:
+1. Log into your Netcash account:
 	https://merchant.netcash.co.za/SiteLogin.aspx
 2. Type in your Netcash Username, Password, and PIN
 2. Click on Account Profile
-3. Click NetConnector
+3. Click on NetConnector
 4. Click on Pay Now
 5. Click "Active:"
 6. Type in your Email address
