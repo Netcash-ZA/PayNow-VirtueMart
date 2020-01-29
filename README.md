@@ -10,7 +10,7 @@ Netcash South Africa's Pay Now third party gateway integration for Joomla Virtue
 Installation Instructions
 -------------------------
 Download the files from GitHub to a temporary location:
-* https://github.com/SagePay/PayNow-VirtueMart/archive/master.zip
+* https://github.com/Netcash-ZA/PayNow-VirtueMart/archive/master.zip
 
 The ZIP file contains all the source code, but the only file that you will require for VirtueMart is in the root folder and it's called:
 
